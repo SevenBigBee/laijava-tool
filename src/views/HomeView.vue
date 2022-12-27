@@ -1,18 +1,52 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <div class="columns is-multiline">
+      <div class="column is-4" @click="goJsonEditor()">
+        <ToolCard
+          to="/json/jsonEditor"
+          icon="fa-hippo"
+          title="json在线编辑"
+          msg="json在线编辑工具，<strong>可视化</strong>编辑json对象和字符串"
+        ></ToolCard>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import ToolCard from "@/components/ToolCard.vue";
 
 export default {
   name: "HomeView",
   components: {
-    HelloWorld,
+    ToolCard,
+  },
+  methods: {
+    goJsonEditor() {
+      this.$router.push("/json/jsonEditor");
+    },
+  },
+  metaInfo: {
+    title: "工具大全", // set a title
+    meta: [
+      {
+        // set meta
+        name: "keyWords",
+        content: "在线工具,工具,js tools,",
+      },
+      {
+        name: "description",
+        content: "在线工具大全，通过浏览器完成各种操作",
+      },
+    ],
+    link: [
+      {
+        // set link
+        rel: "asstes",
+        href: "https://laijava.com/",
+      },
+    ],
   },
 };
 </script>

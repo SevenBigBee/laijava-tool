@@ -1,0 +1,27 @@
+/* dark styling of the editor */
+div.jsoneditor,
+div.jsoneditor-menu {
+  border-color: #48c78e;
+}
+div.jsoneditor-menu {
+  background-color: #48c78e;
+}
+
+tr.jsoneditor-highlight,
+tr.jsoneditor-selected {
+  background-color: #ebfffc;
+}
+
+div.jsoneditor-field.highlight-active,
+div.jsoneditor-field.highlight-active:focus,
+div.jsoneditor-field.highlight-active:hover,
+div.jsoneditor-value.highlight-active,
+div.jsoneditor-value.highlight-active:focus,
+div.jsoneditor-value.highlight-active:hover {
+  background-color: #ebfffc;
+  border-color: #ebfffc;
+}
+
+.jsoneditor .autocomplete.dropdown {
+  flex-wrap: wrap;
+}
