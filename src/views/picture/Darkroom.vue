@@ -1,13 +1,11 @@
 <template>
-    
+  <view></view>
 </template>
 
 <script>
-    export default {
-        name: "Darkroom"
-    }
+export default {
+  name: "DarkroomEditor",
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -47,7 +47,7 @@ new Vue({
   render: (h) => h(App),
 }).$mount("#app");
 
-let _hmt = _hmt || [];
+var _hmt = _hmt || [];
 (function () {
   let hm = document.createElement("script");
   hm.src = "https://hm.baidu.com/hm.js?42a63131e4c057edafcd1c9cd3500977";
