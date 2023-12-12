@@ -35,9 +35,12 @@ export default {
 }
 .toolCard {
   border-radius: 6px;
+  border: 1px solid rgba(0, 148, 126, 0.6);
+  background-color: rgba(0, 148, 126, 0.1);
+
   &:hover {
     color: #00947e !important;
-    background-color: #ebfffc;
+    background-color: rgba(0, 148, 126, 0.2);
     cursor: pointer;
   }
 }

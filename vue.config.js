@@ -15,6 +15,7 @@ const paths = [
 ];
 
 module.exports = defineConfig({
+  productionSourceMap: false,
   transpileDependencies: true,
   publicPath: "/tools/",
   configureWebpack: {
