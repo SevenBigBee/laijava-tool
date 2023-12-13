@@ -6,11 +6,17 @@
           <a class="navbar-item" href="/">
             <span>Lai's Blog</span>
           </a>
-          <a class="navbar-item" @click="goHome()">
-            <span>首页</span>
+          <a class="navbar-item">
+            <!-- <span>首页</span> -->
+            <NavItem type="is-danger" icon="fa-home" title="首页"></NavItem>
           </a>
-          <a class="navbar-item" @click="goJsonEditor()">
-            <span>Json在线编辑</span>
+          <a class="navbar-item">
+            <NavItem
+              type="is-success"
+              to="/json/jsonEditor"
+              icon="fa-hippo"
+              title="Json在线编辑"
+            ></NavItem>
           </a>
           <!--          <div class="navbar-item has-dropdown is-hoverable">-->
           <!--            <a class="navbar-link"> Json </a>-->
@@ -59,10 +65,11 @@
 </template>
 <script>
 import BuSuanZi from "@/components/BuSuanZi";
-
+import NavItem from "@/components/NavItem";
 export default {
   components: {
     BuSuanZi,
+    NavItem,
   },
   methods: {
     goHome() {

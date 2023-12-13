@@ -2,6 +2,8 @@ const { defineConfig } = require("@vue/cli-service");
 const PreRenderSPAPlugin = require("prerender-spa-plugin-next");
 const SitemapPlugin = require("sitemap-webpack-plugin").default;
 const CompressionPlugin = require("compression-webpack-plugin");
+const UnoCSS = require("@unocss/webpack").default;
+
 // 站点地图
 const paths = [
   {
@@ -20,6 +22,8 @@ module.exports = defineConfig({
   publicPath: "/tools/",
   configureWebpack: {
     plugins: [
+      UnoCSS(),
+
       new PreRenderSPAPlugin({
         routes: ["/", "/json/jsonEditor"],
       }),
@@ -33,7 +37,9 @@ module.exports = defineConfig({
         // deleteOriginalAssets: false, // 是否删除未压缩的源文件，谨慎设置，如果希望提供非gzip的资源，可不设置或者设置为false（比如删除打包后的gz后还可以加载到原始资源文件）
       }), //maxChunks：使用大于或等于 1 的值，来限制 chunk 的最大数量。使用 1 防止添加任何其他额外的 chunk，这是因为entry/main chunk 也会包含在计数之中。
     ],
-
+    optimization: {
+      realContentHash: true,
+    },
     resolve: {
       fallback: {
         fs: false,

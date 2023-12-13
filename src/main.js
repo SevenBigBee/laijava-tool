@@ -6,6 +6,7 @@ import MetaInfo from "vue-meta-info";
 import "buefy/dist/buefy.css";
 import Buefy from "buefy";
 import Ads from "vue-google-adsense";
+import "uno.css";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 // internal icons
@@ -16,10 +17,19 @@ import {
   faUsers,
   faCrown,
   faHippo,
+  faHome,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faUpload, faDownload, faLightbulb, faUsers, faCrown, faHippo);
+library.add(
+  faUpload,
+  faDownload,
+  faLightbulb,
+  faUsers,
+  faCrown,
+  faHippo,
+  faHome
+);
 Vue.component("vue-fontawesome", FontAwesomeIcon);
 
 Vue.config.productionTip = false;
