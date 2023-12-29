@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="columns is-multiline">
-      <div class="column is-4" @click="goJsonEditor()">
+      <div class="column is-4">
         <ToolCard
           to="/json/jsonEditor"
           icon="fa-hippo"
@@ -22,11 +22,7 @@ export default {
   components: {
     ToolCard,
   },
-  methods: {
-    goJsonEditor() {
-      this.$router.push("/json/jsonEditor");
-    },
-  },
+  methods: {},
   metaInfo: {
     title: "工具大全", // set a title
     meta: [

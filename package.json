@@ -8,15 +8,16 @@
     "lint": "eslint --fix --ext .js,.vue src"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.2.1",
-    "@fortawesome/free-solid-svg-icons": "^6.2.1",
-    "@fortawesome/vue-fontawesome": "^2.0.9",
-    "buefy": "^0.9.22",
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/vue-fontawesome": "^2.0.10",
+    "@unocss/webpack": "^0.58.0",
+    "buefy": "^0.9.25",
     "busuanzi.pure.js": "^1.0.3",
-    "core-js": "^3.8.3",
+    "core-js": "^3.34.0",
     "file-saver": "^2.0.5",
     "filereader": "^0.10.3",
-    "jsoneditor": "^9.9.2",
+    "jsoneditor": "^9.10.4",
     "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
     "vue": "^2.7.14",
@@ -27,8 +28,8 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.16",
-    "@babel/eslint-parser": "^7.12.16",
+    "@babel/core": "^7.23.6",
+    "@babel/eslint-parser": "^7.23.3",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
@@ -36,14 +37,15 @@
     "@vue/cli-service": "~5.0.0",
     "compression-webpack-plugin": "^10.0.0",
     "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.0.3",
     "prerender-spa-plugin-next": "^4.2.3",
-    "prettier": "^2.4.1",
-    "sass": "^1.32.7",
+    "prettier": "^2.8.8",
+    "sass": "^1.69.5",
     "sass-loader": "^12.0.0",
     "sitemap-webpack-plugin": "^1.1.1",
+    "unocss": "^0.58.0",
     "vue-template-compiler": "^2.6.14"
   }
 }

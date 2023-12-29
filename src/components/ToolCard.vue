@@ -1,5 +1,5 @@
 <template>
-  <div class="tile is-vertical toolCard">
+  <div class="tile is-vertical toolCard" @click="goTo()">
     <p>
       <b-icon :icon="icon" :pack="pack" :size="size" type="is-success">
       </b-icon>
@@ -16,6 +16,8 @@ export default {
     icon: String,
     title: String,
     msg: String,
+    to: { type: String, default: "/" },
+
     pack: {
       type: String,
       default: "fas",
@@ -23,6 +25,13 @@ export default {
     size: {
       type: String,
       default: "is-large",
+    },
+  },
+  methods: {
+    goTo() {
+      console.log(this.to);
+      console.log(this.props);
+      this.$router.push(this.to);
     },
   },
 };
