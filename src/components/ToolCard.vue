@@ -1,5 +1,5 @@
 <template>
-  <div class="tile is-vertical toolCard" @click="goTo()">
+  <div class="tile is-vertical toolCard p5px" @click="goTo()">
     <p>
       <b-icon :icon="icon" :pack="pack" :size="size" type="is-success">
       </b-icon>

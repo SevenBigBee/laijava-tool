@@ -18,6 +18,8 @@ import {
   faCrown,
   faHippo,
   faHome,
+  faLink,
+  faExchangeAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -28,7 +30,9 @@ library.add(
   faUsers,
   faCrown,
   faHippo,
-  faHome
+  faHome,
+  faLink,
+  faExchangeAlt
 );
 Vue.component("vue-fontawesome", FontAwesomeIcon);
 

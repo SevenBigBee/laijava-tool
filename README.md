@@ -52,3 +52,7 @@ library.add(
   faHome
 );
 ```
+
+
+### 站点地图配置
+vue.config.js -> paths

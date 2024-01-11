@@ -1,6 +1,15 @@
 <template>
   <div flex class="flex-items-center" @click="goTo()">
-    <b-icon :icon="icon" :pack="pack" :size="size" :type="type" flex mr5px>
+    <b-icon
+      v-if="icon"
+      b-icon
+      :icon="icon"
+      :pack="pack"
+      :size="size"
+      :type="type"
+      flex
+      mr5px
+    >
     </b-icon>
     <div>{{ title }}</div>
   </div>
@@ -20,7 +29,7 @@ export default {
     to: { type: String, default: "/" },
     size: {
       type: String,
-      default: "is-medium",
+      default: "",
     },
   },
   methods: {

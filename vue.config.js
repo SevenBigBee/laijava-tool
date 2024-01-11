@@ -14,6 +14,14 @@ const paths = [
     path: "/json/jsonEditor",
     lastmod: "2022-12-20 18:00:00",
   },
+  {
+    path: "/base64/base64",
+    lastmod: "2024-01-10 18:00:00",
+  },
+  {
+    path: "/url/urlEncode",
+    lastmod: "2024-01-10 18:00:00",
+  },
 ];
 
 module.exports = defineConfig({
@@ -25,7 +33,7 @@ module.exports = defineConfig({
       UnoCSS(),
 
       new PreRenderSPAPlugin({
-        routes: ["/", "/json/jsonEditor"],
+        routes: ["/", "/json/jsonEditor", "/base64/base64", "/url/urlEncode"],
       }),
       new SitemapPlugin({ base: "https://laijava.com/tools", paths }),
       new CompressionPlugin({

@@ -20,6 +20,24 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "json" */ "../views/json/JsonEditor.vue"),
   },
+  {
+    path: "/url/urlEncode",
+    name: "urlEncode",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "json" */ "../views/url/UrlEncode.vue"),
+  },
+  {
+    path: "/base64/base64",
+    name: "Base64",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "json" */ "../views/base64/Base64.vue"),
+  },
 ];
 
 const router = new VueRouter({

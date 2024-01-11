@@ -14,8 +14,24 @@
             <NavItem
               type="is-success"
               to="/json/jsonEditor"
-              icon="fa-hippo"
+              icon=""
               title="Json在线编辑"
+            ></NavItem>
+          </a>
+          <a class="navbar-item">
+            <NavItem
+              type="is-success"
+              to="/url/urlEncode"
+              icon=""
+              title="url在线解码"
+            ></NavItem>
+          </a>
+          <a class="navbar-item">
+            <NavItem
+              type="is-success"
+              to="/base64/base64"
+              icon=""
+              title="base64在线解码"
             ></NavItem>
           </a>
           <!--          <div class="navbar-item has-dropdown is-hoverable">-->

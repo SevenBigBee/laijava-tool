@@ -9,6 +9,22 @@
           msg="json在线编辑工具，<strong>可视化</strong>编辑json对象和字符串"
         ></ToolCard>
       </div>
+      <div class="column is-4">
+        <ToolCard
+          to="/url/urlEncode"
+          icon="fa-link"
+          title="url在线编码"
+          msg="url在线编码"
+        ></ToolCard>
+      </div>
+      <div class="column is-4">
+        <ToolCard
+          to="/base64/base64"
+          icon="fa-exchange-alt"
+          title="base64在线编码"
+          msg="base64在线编码"
+        ></ToolCard>
+      </div>
     </div>
   </div>
 </template>
