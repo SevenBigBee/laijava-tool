@@ -1,122 +1,27 @@
-# This workflow will build and push a new container image to Alibaba Cloud Container Registry (ACR),
-# and then will deploy it to Alibaba Cloud Container Service for Kubernetes (ACK), when there is a push to the "master" branch.
-#
-# To use this workflow, you will need to complete the following set-up steps:
-#
-# 1. Create an ACR repository to store your container images.
-#    You can use ACR EE instance for more security and better performance.
-#    For instructions see https://www.alibabacloud.com/help/doc-detail/142168.htm
-#
-# 2. Create an ACK cluster to run your containerized application.
-#    You can use ACK Pro cluster for more security and better performance.
-#    For instructions see https://www.alibabacloud.com/help/doc-detail/95108.htm
-#
-# 3. Store your AccessKey pair in GitHub Actions secrets named `ACCESS_KEY_ID` and `ACCESS_KEY_SECRET`.
-#    For instructions on setting up secrets see: https://developer.github.com/actions/managing-workflows/storing-secrets/
-#
-# 4. Change the values for the REGION_ID, REGISTRY, NAMESPACE, IMAGE, ACK_CLUSTER_ID, and ACK_DEPLOYMENT_NAME.
-#
+name: Build And Deploy To Aliyun ECS
 
-name: Build and Deploy to ACK
+on:                               # 该 CI/CD 触发时的事件
+  push:                           # 只要push代码 就触发流程，更多触发事件请参考官方文档
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
-on:
-  push:
-    branches: [ "master" ]
-
-# Environment variables available to all jobs and steps in this workflow.
-env:
-  REGION_ID: cn-hangzhou
-  REGISTRY: registry.cn-hangzhou.aliyuncs.com
-  NAMESPACE: namespace
-  IMAGE: repo
-  TAG: ${{ github.sha }}
-  ACK_CLUSTER_ID: clusterID
-  ACK_DEPLOYMENT_NAME: nginx-deployment
-
-  ACR_EE_REGISTRY: myregistry.cn-hangzhou.cr.aliyuncs.com
-  ACR_EE_INSTANCE_ID: instanceID
-  ACR_EE_NAMESPACE: namespace
-  ACR_EE_IMAGE: repo
-  ACR_EE_TAG: ${{ github.sha }}
-
-permissions:
-  contents: read
-
-jobs:
+jobs:                             # 需要执行的任务，可以有多个任务，所有的 job 都是并行的，但往往会有依赖关系
   build:
-    runs-on: ubuntu-latest
-    environment: production
+    runs-on: ubuntu-latest        # github分配的运行平台，2-core CPU/7 GB of RAM memory/14 GB of SSD disk space
+    steps:                        # 某个任务的一系列步骤,如前端需要安装依赖，编译打包代码等等
+      - uses: actions/checkout@v2          #选择一个 现有的action，执行你的操作
+        with:
+          persist-credentials: false
+          ref: master
+          submodules: true
+      - name: Deploy to aliyun server        # 为 step 指定一个名称，将会在 github action 的控制台中显示
+        uses: easingthemes/ssh-deploy@v2.1.5      #可以访问的仓库，实现的上传服务器步骤被封装在此action
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}  #这个是阿里云的私钥
+          ARGS: "-avzr --delete"
+          SOURCE: "./"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}    #阿里云的 ip
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}    #阿里云用户
+          TARGET: "/opt/webwiki/docs"       #被部署的服务器路径
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    # 1.1 Login to ACR
-    - name: Login to ACR with the AccessKey pair
-      uses: aliyun/acr-login@v1
-      with:
-        region-id: "${{ env.REGION_ID }}"
-        access-key-id: "${{ secrets.ACCESS_KEY_ID }}"
-        access-key-secret: "${{ secrets.ACCESS_KEY_SECRET }}"
-
-    # 1.2 Build and push image to ACR
-    - name: Build and push image to ACR
-      run: |
-        docker build --tag "$REGISTRY/$NAMESPACE/$IMAGE:$TAG" .
-        docker push "$REGISTRY/$NAMESPACE/$IMAGE:$TAG"
-
-    # 1.3 Scan image in ACR
-    - name: Scan image in ACR
-      uses: aliyun/acr-scan@v1
-      with:
-        region-id: "${{ env.REGION_ID }}"
-        access-key-id: "${{ secrets.ACCESS_KEY_ID }}"
-        access-key-secret: "${{ secrets.ACCESS_KEY_SECRET }}"
-        repository: "${{ env.NAMESPACE }}/${{ env.IMAGE }}"
-        tag: "${{ env.TAG }}"
-
-    # 2.1 (Optional) Login to ACR EE
-    - uses: actions/checkout@v4
-    - name: Login to ACR EE with the AccessKey pair
-      uses: aliyun/acr-login@v1
-      with:
-        login-server: "https://${{ env.ACR_EE_REGISTRY }}"
-        region-id: "${{ env.REGION_ID }}"
-        access-key-id: "${{ secrets.ACCESS_KEY_ID }}"
-        access-key-secret: "${{ secrets.ACCESS_KEY_SECRET }}"
-        instance-id: "${{ env.ACR_EE_INSTANCE_ID }}"
-
-    # 2.2 (Optional) Build and push image ACR EE
-    - name: Build and push image to ACR EE
-      run: |
-        docker build -t "$ACR_EE_REGISTRY/$ACR_EE_NAMESPACE/$ACR_EE_IMAGE:$TAG" .
-        docker push "$ACR_EE_REGISTRY/$ACR_EE_NAMESPACE/$ACR_EE_IMAGE:$TAG"
-    # 2.3 (Optional) Scan image in ACR EE
-    - name: Scan image in ACR EE
-      uses: aliyun/acr-scan@v1
-      with:
-        region-id: "${{ env.REGION_ID }}"
-        access-key-id: "${{ secrets.ACCESS_KEY_ID }}"
-        access-key-secret: "${{ secrets.ACCESS_KEY_SECRET }}"
-        instance-id: "${{ env.ACR_EE_INSTANCE_ID }}"
-        repository: "${{ env.ACR_EE_NAMESPACE}}/${{ env.ACR_EE_IMAGE }}"
-        tag: "${{ env.ACR_EE_TAG }}"
-
-    # 3.1 Set ACK context
-    - name: Set K8s context
-      uses: aliyun/ack-set-context@v1
-      with:
-        access-key-id: "${{ secrets.ACCESS_KEY_ID }}"
-        access-key-secret: "${{ secrets.ACCESS_KEY_SECRET }}"
-        cluster-id: "${{ env.ACK_CLUSTER_ID }}"
-
-    # 3.2 Deploy the image to the ACK cluster
-    - name: Set up Kustomize
-      run: |-
-        curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash /dev/stdin 3.8.6
-    - name: Deploy
-      run: |-
-        ./kustomize edit set image REGISTRY/NAMESPACE/IMAGE:TAG=$REGISTRY/$NAMESPACE/$IMAGE:$TAG
-        ./kustomize build . | kubectl apply -f -
-        kubectl rollout status deployment/$ACK_DEPLOYMENT_NAME
-        kubectl get services -o wide
