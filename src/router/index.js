@@ -5,6 +5,7 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css"; // nprogress样式文件
 Vue.use(VueRouter);
 
+
 const routes = [
   {
     path: "/",
