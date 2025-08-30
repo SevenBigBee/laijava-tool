@@ -1,13 +1,14 @@
 name: Build And Deploy To Aliyun ECS
 
 on: # 该 CI/CD 触发时的事件
-  push: # 只要push代码 就触发流程
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
+    types: [ closed ]
+    branches: [ master ] # 当一个指向 master 分支的 PR 被关闭时触发
+  workflow_dispatch: {} # 允许在 GitHub Actions 页面手动触发此工作流（可用于回滚）
 
 jobs: # 需要执行的任务
   build-and-deploy: # 将任务名修改得更清晰
+    if: github.event.pull_request.merged == true # 只有当 PR 被合并时才运行此任务
     runs-on: ubuntu-latest # github分配的运行平台
     steps: # 任务的一系列步骤
 
@@ -19,16 +20,16 @@ jobs: # 需要执行的任务
           ref: master
           submodules: true
 
-      # 第 2 步：设置 Node.js 环境，并指定版本为 20.16.0
-      - name: Setup Node.js v20.16.0
+      # 第 2 步：设置 Node.js 环境为 v18，以确保依赖兼容性
+      - name: Setup Node.js v18
         uses: actions/setup-node@v3
         with:
-          node-version: '20.16.0'
+          node-version: '18'
           cache: 'npm' # 使用缓存加快后续构建速度
 
-      # 第 3 步：安装项目依赖
+      # 第 3 步：使用 npm ci 进行干净的依赖安装
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       # 第 4 步：执行代码格式化检查与修复
       - name: Lint and Fix
