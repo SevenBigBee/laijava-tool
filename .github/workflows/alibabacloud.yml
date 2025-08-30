@@ -40,7 +40,30 @@ jobs: # 需要執行的任務
       - name: Build Project
         run: npm run build # 這會產生一個 dist 目錄
 
-      # 第 6 步：部署到阿里雲伺服器
+      # 第 6 步：在部署前備份並清空舊版本目錄
+      - name: Backup and Clear old version on server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+            BACKUP_DIR="/usr/local/tomcat9/webapps/backups"
+            TARGET_DIR="/usr/local/tomcat9/webapps/tools"
+            # 確保備份目錄存在
+            mkdir -p ${BACKUP_DIR}
+            # 如果目標目錄存在，則執行備份和清空
+            if [ -d "${TARGET_DIR}" ]; then
+              echo "Backing up ${TARGET_DIR} to ${BACKUP_DIR}/tools_backup_${TIMESTAMP}"
+              cp -r ${TARGET_DIR} ${BACKUP_DIR}/tools_backup_${TIMESTAMP}
+              echo "Clearing directory ${TARGET_DIR} for new deployment..."
+              rm -rf ${TARGET_DIR}/*
+            else
+              echo "Target directory ${TARGET_DIR} does not exist, skipping backup."
+            fi
+
+      # 第 7 步：部署到阿里雲伺服器
       - name: Deploy to Aliyun Server
         uses: easingthemes/ssh-deploy@v2.1.5
         env:
@@ -51,5 +74,5 @@ jobs: # 需要執行的任務
           SOURCE: "dist/"
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }} # 阿里雲的 ip
           REMOTE_USER: ${{ secrets.REMOTE_USER }} # 阿里雲使用者
-          TARGET: "/usr/local/tomcat9/webapps/tools1" # 被部署的伺服器路徑
+          TARGET: "/usr/local/tomcat9/webapps/tools" # 被部署的伺服器路徑
 
