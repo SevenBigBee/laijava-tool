@@ -6,11 +6,11 @@
       <!-- Live Clock -->
       <div class="mb-6">
         <h2 class="text-xl font-semibold mb-2">实时时间</h2>
+        <b-field label="当前日期 (yyyy-MM-dd HH:mm:ss)">
+          <b-input :value="liveFormattedDate" readonly></b-input>
+        </b-field>
         <b-field label="当前时间戳 (毫秒)">
           <b-input :value="currentTimestamp" readonly></b-input>
-        </b-field>
-        <b-field label="当前日期 (yyyy-MM-dd HH:mm:ss)">
-          <b-input :value="formattedDate" readonly></b-input>
         </b-field>
       </div>
 
@@ -18,22 +18,20 @@
 
       <!-- Manual Conversion -->
       <div>
-        <h2 class="text-xl font-semibold mb-2">手动转换</h2>
+        <h2 class="text-xl font-semibold mb-2">手动转换 (双向绑定)</h2>
 
-        <!-- Timestamp to Date -->
-        <b-field label="时间戳 (毫秒) -> 日期">
-          <b-input v-model="manualTimestamp" @input="convertTsToDate" placeholder="输入10或13位时间戳"></b-input>
-        </b-field>
-        <b-field>
-           <b-input :value="manualDate" readonly placeholder="转换后的日期"></b-input>
+        <b-field label="日期/时间选择">
+          <b-datetimepicker
+            v-model="conversionDate"
+            rounded
+            placeholder="点击选择日期和时间"
+            icon="calendar-today"
+            :timepicker="{ hourFormat: '24' }">
+          </b-datetimepicker>
         </b-field>
 
-        <!-- Date to Timestamp -->
-        <b-field label="日期 -> 时间戳 (毫秒)" class="mt-4">
-          <b-input v-model="manualDateInput" @input="convertDateToTs" placeholder="例如: 2023-01-01 12:00:00"></b-input>
-        </b-field>
-        <b-field>
-          <b-input :value="manualTimestampOutput" readonly placeholder="转换后的时间戳"></b-input>
+        <b-field label="时间戳 (毫秒)">
+           <b-input v-model="conversionTimestamp" placeholder="输入或查看13位时间戳"></b-input>
         </b-field>
       </div>
     </div>
@@ -45,19 +43,43 @@ export default {
   name: "TimestampConverter",
   data() {
     return {
+      // Live clock
       currentTimestamp: "",
       intervalId: null,
-      manualTimestamp: "",
-      manualDate: "",
-      manualDateInput: "",
-      manualTimestampOutput: "",
+      // Manual conversion
+      conversionDate: new Date(),
+      conversionTimestamp: String(new Date().getTime()),
+      isUpdating: false, // Flag to prevent watcher loops
     };
   },
   computed: {
-    formattedDate() {
+    liveFormattedDate() {
       if (!this.currentTimestamp) return "";
       return this.formatTimestamp(this.currentTimestamp);
     },
+  },
+  watch: {
+    conversionDate(newDate) {
+      if (this.isUpdating) return;
+      if (newDate && !isNaN(newDate.getTime())) {
+        this.isUpdating = true;
+        this.conversionTimestamp = String(newDate.getTime());
+        this.$nextTick(() => { this.isUpdating = false; });
+      }
+    },
+    conversionTimestamp(newTs) {
+      if (this.isUpdating) return;
+      const tsNumber = Number(newTs);
+      if (newTs && !isNaN(tsNumber) && String(newTs).length >= 10) {
+        this.isUpdating = true;
+        // Handle 10-digit (seconds) and 13-digit (milliseconds) timestamps
+        const date = new Date(tsNumber * (String(tsNumber).length === 10 ? 1000 : 1));
+        if (!isNaN(date.getTime())) {
+          this.conversionDate = date;
+        }
+        this.$nextTick(() => { this.isUpdating = false; });
+      }
+    }
   },
   methods: {
     updateTime() {
@@ -67,13 +89,8 @@ export default {
       return n < 10 ? "0" + n : n;
     },
     formatTimestamp(ts) {
-      // Ensure timestamp is a number and in milliseconds
-      const timestamp = Number(ts);
-      if (isNaN(timestamp)) return "无效的时间戳";
-
-      // Check if it's seconds and convert to milliseconds
-      const date = new Date(timestamp * (String(timestamp).length === 10 ? 1000 : 1));
-
+      const date = new Date(Number(ts));
+      if (isNaN(date.getTime())) return "";
       const year = date.getFullYear();
       const month = this.pad(date.getMonth() + 1);
       const day = this.pad(date.getDate());
@@ -81,25 +98,6 @@ export default {
       const minutes = this.pad(date.getMinutes());
       const seconds = this.pad(date.getSeconds());
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    },
-    convertTsToDate() {
-      if (!this.manualTimestamp) {
-        this.manualDate = "";
-        return;
-      }
-      this.manualDate = this.formatTimestamp(this.manualTimestamp);
-    },
-    convertDateToTs() {
-      if (!this.manualDateInput) {
-        this.manualTimestampOutput = "";
-        return;
-      }
-      const date = new Date(this.manualDateInput);
-      if (isNaN(date.getTime())) {
-        this.manualTimestampOutput = "无效的日期格式";
-      } else {
-        this.manualTimestampOutput = date.getTime();
-      }
     },
   },
   mounted() {
