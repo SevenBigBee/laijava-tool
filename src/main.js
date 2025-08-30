@@ -20,6 +20,7 @@ import {
   faHome,
   faLink,
   faExchangeAlt,
+  faClock,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -32,7 +33,8 @@ library.add(
   faHippo,
   faHome,
   faLink,
-  faExchangeAlt
+  faExchangeAlt,
+  faClock
 );
 Vue.component("vue-fontawesome", FontAwesomeIcon);
 

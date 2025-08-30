@@ -38,6 +38,14 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "json" */ "../views/base64/Base64.vue"),
   },
+  {
+    path: "/timestamp/converter",
+    name: "TimestampConverter",
+    component: () =>
+      import(
+        /* webpackChunkName: "timestamp" */ "../views/timestamp/TimestampConverter.vue"
+      ),
+  },
 ];
 
 const router = new VueRouter({
