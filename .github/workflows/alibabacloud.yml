@@ -1,27 +1,53 @@
 name: Build And Deploy To Aliyun ECS
 
-on:                               # 该 CI/CD 触发时的事件
-  push:                           # 只要push代码 就触发流程，更多触发事件请参考官方文档
+on: # 该 CI/CD 触发时的事件
+  push: # 只要push代码 就触发流程
     branches: [ master ]
   pull_request:
     branches: [ master ]
 
-jobs:                             # 需要执行的任务，可以有多个任务，所有的 job 都是并行的，但往往会有依赖关系
-  build:
-    runs-on: ubuntu-latest        # github分配的运行平台，2-core CPU/7 GB of RAM memory/14 GB of SSD disk space
-    steps:                        # 某个任务的一系列步骤,如前端需要安装依赖，编译打包代码等等
-      - uses: actions/checkout@v2          #选择一个 现有的action，执行你的操作
+jobs: # 需要执行的任务
+  build-and-deploy: # 将任务名修改得更清晰
+    runs-on: ubuntu-latest # github分配的运行平台
+    steps: # 任务的一系列步骤
+
+      # 第 1 步：拉取代码
+      - name: Checkout Code
+        uses: actions/checkout@v2
         with:
           persist-credentials: false
           ref: master
           submodules: true
-      - name: Deploy to aliyun server        # 为 step 指定一个名称，将会在 github action 的控制台中显示
-        uses: easingthemes/ssh-deploy@v2.1.5      #可以访问的仓库，实现的上传服务器步骤被封装在此action
+
+      # 第 2 步：设置 Node.js 环境，并指定版本为 20.16.0
+      - name: Setup Node.js v20.16.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.16.0'
+          cache: 'npm' # 使用缓存加快后续构建速度
+
+      # 第 3 步：安装项目依赖
+      - name: Install Dependencies
+        run: npm install
+
+      # 第 4 步：执行代码格式化检查与修复
+      - name: Lint and Fix
+        run: npm run lint -- --fix
+
+      # 第 5 步：执行构建命令
+      - name: Build Project
+        run: npm run build # 这会生成一个 dist 目录
+
+      # 第 6 步：部署到阿里云服务器
+      - name: Deploy to Aliyun Server
+        uses: easingthemes/ssh-deploy@v2.1.5
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}  #这个是阿里云的私钥
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }} # 阿里云的私钥
           ARGS: "-avzr --delete"
-          SOURCE: "./"
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}    #阿里云的 ip
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}    #阿里云用户
-          TARGET: "/opt/webwiki/docs"       #被部署的服务器路径
+          # 注意这里的 SOURCE 已经修改，末尾的 / 很重要
+          # 它表示将 dist 目录下的所有内容同步过去，而不是 dist 目录本身
+          SOURCE: "dist/"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }} # 阿里云的 ip
+          REMOTE_USER: ${{ secrets.REMOTE_USER }} # 阿里云用户
+          TARGET: "/usr/local/tomcat9/webapps/tools1" # 被部署的服务器路径
 
