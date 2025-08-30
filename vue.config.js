@@ -22,6 +22,10 @@ const paths = [
     path: "/url/urlEncode",
     lastmod: "2024-01-10 18:00:00",
   },
+  {
+    path: "/timestamp/converter",
+    lastmod: "2025-08-30 18:00:00",
+  },
 ];
 
 module.exports = defineConfig({
@@ -33,7 +37,13 @@ module.exports = defineConfig({
       UnoCSS(),
 
       new PreRenderSPAPlugin({
-        routes: ["/", "/json/jsonEditor", "/base64/base64", "/url/urlEncode"],
+        routes: [
+          "/",
+          "/json/jsonEditor",
+          "/base64/base64",
+          "/url/urlEncode",
+          "/timestamp/converter",
+        ],
       }),
       new SitemapPlugin({ base: "https://laijava.com/tools", paths }),
       new CompressionPlugin({
