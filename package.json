@@ -47,5 +47,8 @@
     "sitemap-webpack-plugin": "^1.1.1",
     "unocss": "^0.58.0",
     "vue-template-compiler": "^2.6.14"
+  },
+  "overrides": {
+    "@vue/vue-loader-v15": "npm:vue-loader@^15.9.7"
   }
 }
