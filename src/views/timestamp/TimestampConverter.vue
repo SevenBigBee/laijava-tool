@@ -1,39 +1,50 @@
 <template>
-  <section class="p-4">
+  <section class="p-6">
     <div class="container mx-auto">
-      <h1 class="text-2xl font-bold mb-4">时间戳转换</h1>
+      <h1 class="text-2xl font-bold mb-6 text-center">时间戳转换</h1>
 
       <!-- Live Clock -->
-      <div class="mb-6">
-        <h2 class="text-xl font-semibold mb-2">实时时间</h2>
-        <b-field label="当前日期 (yyyy-MM-dd HH:mm:ss)">
-          <b-input :value="liveFormattedDate" readonly></b-input>
+      <b-box>
+        <h2 class="text-xl font-semibold mb-4">实时时间</h2>
+        <b-field label="当前日期" horizontal>
+          <b-input :value="liveFormattedDate" readonly expanded></b-input>
         </b-field>
-        <b-field label="当前时间戳 (毫秒)">
-          <b-input :value="currentTimestamp" readonly></b-input>
+        <b-field label="当前时间戳 (毫秒)" horizontal>
+          <b-input :value="currentTimestamp" readonly expanded></b-input>
         </b-field>
-      </div>
-
-      <hr class="my-6">
+      </b-box>
 
       <!-- Manual Conversion -->
-      <div>
-        <h2 class="text-xl font-semibold mb-2">手动转换</h2>
-
-        <b-field label="日期/时间选择">
+      <b-box class="mt-6">
+        <h2 class="text-xl font-semibold mb-4">手动转换</h2>
+        <b-field label="日期/时间" horizontal>
           <b-datetimepicker
             v-model="conversionDate"
             rounded
             placeholder="点击选择日期和时间"
             icon="calendar-today"
-            :timepicker="{ hourFormat: '24', enableSeconds: true }">
+            :timepicker="{ hourFormat: '24', enableSeconds: true }"
+            :datetime-formatter="formatDateTimeForPicker"
+            :datetime-parser="parseDateTimeFromPicker"
+            expanded>
           </b-datetimepicker>
         </b-field>
-
-        <b-field label="时间戳 (毫秒)">
-           <b-input v-model="conversionTimestamp" rounded placeholder="输入或查看13位时间戳"></b-input>
+        <b-field label="时间戳 (毫秒)" horizontal>
+           <b-input v-model="conversionTimestamp" rounded placeholder="输入或查看13位时间戳" expanded></b-input>
         </b-field>
-      </div>
+      </b-box>
+
+      <!-- Description -->
+      <b-box class="mt-6 content">
+        <h4>什么是时间戳？</h4>
+        <p>
+          时间戳（Timestamp）是指格林威治时间1970年01月01日00时00分00秒(北京时间1970年01月01日08时00分00秒)起至现在的总毫秒数。它是一个长整型，通常为13位。
+        </p>
+        <p>
+          在计算机中，时间戳是表示某一时刻的唯一、可排序的方式，常用于记录事件发生的时间、数据版本控制和缓存更新等场景。
+        </p>
+      </b-box>
+
     </div>
   </section>
 </template>
@@ -99,6 +110,15 @@ export default {
       const seconds = this.pad(date.getSeconds());
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     },
+    formatDateTimeForPicker(date) {
+      // Formats the date for the text input field of the picker
+      return this.formatTimestamp(date.getTime());
+    },
+    parseDateTimeFromPicker(datestr) {
+      // Parses the text input from the picker
+      const date = new Date(datestr);
+      return isNaN(date.getTime()) ? null : date;
+    },
   },
   mounted() {
     this.updateTime();
@@ -111,4 +131,5 @@ export default {
 </script>
 
 <style scoped>
+/* You can add custom styles here if needed */
 </style>

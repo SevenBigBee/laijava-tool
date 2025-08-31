@@ -32,6 +32,9 @@ module.exports = defineConfig({
   productionSourceMap: false,
   transpileDependencies: true,
   publicPath: "/tools/",
+  devServer: {
+    historyApiFallback: true,
+  },
   configureWebpack: {
     plugins: [
       UnoCSS(),
