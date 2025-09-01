@@ -75,4 +75,3 @@ jobs: # 需要執行的任務
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }} # 阿里雲的 ip
           REMOTE_USER: ${{ secrets.REMOTE_USER }} # 阿里雲使用者
           TARGET: "/usr/local/tomcat9/webapps/tools" # 被部署的伺服器路徑
-

@@ -22,7 +22,7 @@
             v-model="conversionDate"
             rounded
             placeholder="点击选择日期和时间"
-            icon="calendar-today"
+            icon="calendar-alt"
             :timepicker="{ hourFormat: '24', enableSeconds: true }"
             :datetime-formatter="formatDateTimeForPicker"
             :datetime-parser="parseDateTimeFromPicker"
@@ -30,7 +30,7 @@
           </b-datetimepicker>
         </b-field>
         <b-field label="时间戳 (毫秒)" horizontal>
-           <b-input v-model="conversionTimestamp" rounded placeholder="输入或查看13位时间戳" expanded></b-input>
+           <b-input v-model="conversionTimestamp" rounded placeholder="输入或查看13位时间戳" expanded icon="hashtag"></b-input>
         </b-field>
       </b-box>
 
