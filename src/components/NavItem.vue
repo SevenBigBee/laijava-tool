@@ -34,6 +34,8 @@ export default {
   },
   methods: {
     goTo() {
+      console.log(this.to);
+      console.log(this.props);
       this.$router.push(this.to);
     },
   },

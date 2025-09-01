@@ -46,6 +46,7 @@ let script;
 export default {
   name: "BuSuanZi",
   mounted: function () {
+    console.log(document.referrer);
     script = require("busuanzi.pure.js");
   }, // 监听,当路由发生变化的时候执行
   watch: {
