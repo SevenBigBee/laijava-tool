@@ -20,6 +20,11 @@ import {
   faHome,
   faLink,
   faExchangeAlt,
+  faClock,
+  faCalendarAlt,
+  faHashtag,
+  faChevronLeft,
+  faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -32,7 +37,12 @@ library.add(
   faHippo,
   faHome,
   faLink,
-  faExchangeAlt
+  faExchangeAlt,
+  faClock,
+  faCalendarAlt,
+  faHashtag,
+  faChevronLeft,
+  faChevronRight
 );
 Vue.component("vue-fontawesome", FontAwesomeIcon);
 
