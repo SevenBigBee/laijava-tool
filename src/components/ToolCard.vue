@@ -29,6 +29,8 @@ export default {
   },
   methods: {
     goTo() {
+      console.log(this.to);
+      console.log(this.props);
       this.$router.push(this.to);
     },
   },
@@ -39,13 +41,6 @@ export default {
 <style scoped lang="scss">
 .subtitle {
   margin: 20px 0;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; /* Show max 2 lines */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: 2.5em; /* 2 lines * line-height (approx 1.25em) */
-  line-height: 1.25em;
 }
 .toolCard {
   border-radius: 6px;

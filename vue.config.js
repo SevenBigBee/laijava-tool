@@ -24,7 +24,7 @@ const paths = [
   },
   {
     path: "/timestamp/converter",
-    lastmod: "2025-08-30 18:00:00",
+    lastmod: "2025-08-31 18:00:00",
   },
 ];
 
